@@ -21,10 +21,12 @@ class Main {
           try {
             System.out.println("Podaj imię studenta:");
             String name = scanner.nextLine();
+            System.out.println("Podaj nazwisko studenta:");
+            String surname = scanner.nextLine();
             System.out.println("Podaj wiek studenta:");
             int age = scanner.nextInt();
             scanner.nextLine(); // Czyszczenie bufora
-            s.addStudent(new Student(name, age));
+            s.addStudent(new Student(name, surname, age));
             System.out.println("Student został dodany!");
           } catch (IOException e) {
             System.out.println("Błąd podczas dodawania studenta: " + e.getMessage());
@@ -48,7 +50,7 @@ class Main {
           break;
 
         default:
-          System.out.println("Nieprawidłowa opcja, spróbuj ponownie.");
+          System.out.println("Nieprawidłowa opcja, spróbuj ponownie."); // Dodano brakujący cudzysłów
       }
     }
 
