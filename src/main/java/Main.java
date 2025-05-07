@@ -89,8 +89,8 @@ class Main {
               }
               
               System.out.print("Czy chcesz usunąć któregoś z tych studentów? (tak/nie): ");
-              String choice = scanner.nextLine();
-              if (choice.equalsIgnoreCase("tak")) {
+              String deleteChoice = scanner.nextLine();
+              if (deleteChoice.equalsIgnoreCase("tak")) {
                 System.out.print("Podaj numer studenta do usunięcia: ");
                 try {
                   int deleteChoice = Integer.parseInt(scanner.nextLine());
