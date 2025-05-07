@@ -1,0 +1,101 @@
+import java.io.IOException;
+import java.util.Collection;
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+        Service service = new Service();
+        Scanner scanner = new Scanner(System.in);
+        boolean exit = false;
+
+        while (!exit) {
+            System.out.println("\nMenu:");
+            System.out.println("1 - Dodaj studenta");
+            System.out.println("2 - Wyświetl wszystkich studentów");
+            System.out.println("3 - Zakończ program");
+            System.out.print("Wybierz opcję: ");
+
+            int choice = getIntInput(scanner);
+
+            switch (choice) {
+                case 1:
+                    addStudent(service, scanner);
+                    break;
+                case 2:
+                    displayStudents(service);
+                    break;
+                case 3:
+                    System.out.println("Program zakończony.");
+                    exit = true;
+                    break;
+                default:
+                    System.out.println("Nieprawidłowa opcja!");
+            }
+        }
+
+        scanner.close();
+    }
+
+    private static int getIntInput(Scanner scanner) {
+        int value;
+        while (true) {
+            try {
+                value = scanner.nextInt();
+                scanner.nextLine();
+                return value;
+            } catch (Exception e) {
+                System.out.println("Nieprawidłowa wartość. Spróbuj ponownie.");
+                scanner.nextLine();
+            }
+        }
+    }
+
+    private static void addStudent(Service service, Scanner scanner) {
+        try {
+            System.out.println("Podaj imię studenta:");
+            String name = scanner.nextLine();
+
+            System.out.println("Podaj nazwisko studenta:");
+            String surname = scanner.nextLine();
+
+            System.out.println("Podaj wiek studenta:");
+            int age = getIntInput(scanner);
+
+            int day = getValidatedInput(scanner, "Podaj dzień urodzenia (1-31):", 1, 31);
+            int month = getValidatedInput(scanner, "Podaj miesiąc urodzenia (1-12):", 1, 12);
+            int year = getValidatedInput(scanner, "Podaj rok urodzenia (1900-2025):", 1900, 2025);
+
+            String birthDate = String.format("%02d-%02d-%d", day, month, year);
+            Student newStudent = new Student(name, surname, age, birthDate);
+
+            service.addStudent(newStudent);
+            System.out.println("Dodano studenta!");
+        } catch (Exception e) {
+            System.out.println("Wystąpił błąd.");
+            scanner.nextLine();
+        }
+    }
+
+    private static int getValidatedInput(Scanner scanner, String message, int min, int max) {
+        int value;
+        while (true) {
+            System.out.println(message);
+            value = getIntInput(scanner);
+            if (value >= min && value <= max) {
+                return value;
+            } else {
+                System.out.println("Nieprawidłowa wartość. Spróbuj ponownie.");
+            }
+        }
+    }
+
+    private static void displayStudents(Service service) {
+        System.out.println("Lista wszystkich studentów:");
+        Collection<Student> students = service.getStudents();
+        if (students.isEmpty()) {
+            System.out.println("Brak zapisanych studentów.");
+        } else {
+            students.forEach(System.out::println);
+        }
+    }
+}
