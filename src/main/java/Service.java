@@ -1,3 +1,4 @@
+
 import java.util.Collection;
 import java.util.ArrayList;
 import java.io.BufferedReader;
@@ -31,13 +32,6 @@ public class Service {
     return ret;
   }
 
-  /**
-   * Wyszukuje studentów po imieniu.
-   *
-   * @param name Imię, według którego szukamy studentów. Porównanie odbywa się ignorując wielkość liter.
-   * @return Kolekcja studentów, których pole name odpowiada podanemu imieniu.
-   * @throws IOException Jeżeli wystąpi problem odczytu bazy danych.
-   */
   public Collection<Student> findStudentByName(String name) throws IOException {
     Collection<Student> allStudents = getStudents();
     Collection<Student> result = new ArrayList<>();
@@ -48,7 +42,7 @@ public class Service {
     }
     return result;
   }
-}
+
   public void deleteStudent(Student studentToDelete) throws IOException {
     Collection<Student> students = getStudents();
     var f = new FileWriter("db.txt");
@@ -62,3 +56,4 @@ public class Service {
     }
     b.close();
   }
+}
