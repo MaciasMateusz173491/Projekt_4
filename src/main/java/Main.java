@@ -83,8 +83,26 @@ class Main {
               System.out.println("Brak studentów o podanym imieniu.");
             } else {
               System.out.println("Znaleziono następujących studentów:");
-              for (Student student : foundStudents) {
-                System.out.println(student);
+              Student[] studentArray = foundStudents.toArray(new Student[0]);
+              for (int i = 0; i < studentArray.length; i++) {
+                System.out.println((i + 1) + ". " + studentArray[i]);
+              }
+              
+              System.out.print("Czy chcesz usunąć któregoś z tych studentów? (tak/nie): ");
+              String choice = scanner.nextLine();
+              if (choice.equalsIgnoreCase("tak")) {
+                System.out.print("Podaj numer studenta do usunięcia: ");
+                try {
+                  int deleteChoice = Integer.parseInt(scanner.nextLine());
+                  if (deleteChoice > 0 && deleteChoice <= studentArray.length) {
+                    s.deleteStudent(studentArray[deleteChoice - 1]);
+                    System.out.println("Student został usunięty.");
+                  } else {
+                    System.out.println("Nieprawidłowy numer studenta.");
+                  }
+                } catch (NumberFormatException e) {
+                  System.out.println("Nieprawidłowy format numeru.");
+                }
               }
             }
             break;
