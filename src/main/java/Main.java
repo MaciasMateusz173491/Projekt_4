@@ -18,7 +18,8 @@ class Main {
         System.out.println("1 - Dodaj studenta");
         System.out.println("2 - Wyświetl wszystkich studentów");
         System.out.println("3 - Wyszukaj studentów po imieniu");
-        System.out.println("4 - Zakończ program");
+        System.out.println("4 - Usuń studenta");
+        System.out.println("5 - Zakończ program");
         System.out.print("Twój wybór: ");
         int choice = Integer.parseInt(scanner.nextLine());
 
@@ -89,6 +90,35 @@ class Main {
             break;
 
           case 4:
+            System.out.print("Podaj imię studenta do usunięcia: ");
+            String deleteSearchName = scanner.nextLine();
+            Collection<Student> studentsToDelete = s.findStudentByName(deleteSearchName);
+            
+            if (studentsToDelete.isEmpty()) {
+              System.out.println("Nie znaleziono studentów o podanym imieniu.");
+            } else {
+              System.out.println("Znalezieni studenci:");
+              Student[] studentArray = studentsToDelete.toArray(new Student[0]);
+              for (int i = 0; i < studentArray.length; i++) {
+                System.out.println((i + 1) + ". " + studentArray[i]);
+              }
+              
+              System.out.print("Podaj numer studenta do usunięcia: ");
+              try {
+                int deleteChoice = Integer.parseInt(scanner.nextLine());
+                if (deleteChoice > 0 && deleteChoice <= studentArray.length) {
+                  s.deleteStudent(studentArray[deleteChoice - 1]);
+                  System.out.println("Student został usunięty.");
+                } else {
+                  System.out.println("Nieprawidłowy numer studenta.");
+                }
+              } catch (NumberFormatException e) {
+                System.out.println("Nieprawidłowy format numeru.");
+              }
+            }
+            break;
+
+          case 5:
             System.out.println("Program zostanie zamknięty.");
             tak = false;
             break;

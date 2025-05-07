@@ -49,3 +49,16 @@ public class Service {
     return result;
   }
 }
+  public void deleteStudent(Student studentToDelete) throws IOException {
+    Collection<Student> students = getStudents();
+    var f = new FileWriter("db.txt");
+    var b = new BufferedWriter(f);
+    
+    for (Student student : students) {
+      if (!student.toString().equals(studentToDelete.toString())) {
+        b.write(student.toString());
+        b.newLine();
+      }
+    }
+    b.close();
+  }
