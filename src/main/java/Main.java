@@ -18,6 +18,7 @@ class Main {
         System.out.println("1 - Dodaj studenta");
         System.out.println("2 - Wyświetl wszystkich studentów");
         System.out.println("3 - Wyszukaj studentów po imieniu");
+        System.out.println("4 - Zakończ program");
         System.out.print("Twój wybór: ");
         int choice = Integer.parseInt(scanner.nextLine());
 
@@ -87,6 +88,11 @@ class Main {
             }
             break;
 
+          case 4:
+            System.out.println("Program zostanie zamknięty.");
+            tak = false;
+            break;
+            
           default:
             System.out.println("Niepoprawna opcja. Spróbuj ponownie.");
             break;
