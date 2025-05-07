@@ -93,9 +93,9 @@ class Main {
               if (deleteChoice.equalsIgnoreCase("tak")) {
                 System.out.print("Podaj numer studenta do usunięcia: ");
                 try {
-                  int deleteChoice = Integer.parseInt(scanner.nextLine());
-                  if (deleteChoice > 0 && deleteChoice <= studentArray.length) {
-                    s.deleteStudent(studentArray[deleteChoice - 1]);
+                  int deleteNumber = Integer.parseInt(scanner.nextLine());
+                  if (deleteNumber > 0 && deleteNumber <= studentArray.length) {
+                    s.deleteStudent(studentArray[deleteNumber - 1]);
                     System.out.println("Student został usunięty.");
                   } else {
                     System.out.println("Nieprawidłowy numer studenta.");
