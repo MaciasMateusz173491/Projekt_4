@@ -123,9 +123,9 @@ class Main {
               
               System.out.print("Podaj numer studenta do usunięcia: ");
               try {
-                int deleteChoice = Integer.parseInt(scanner.nextLine());
-                if (deleteChoice > 0 && deleteChoice <= studentArray.length) {
-                  s.deleteStudent(studentArray[deleteChoice - 1]);
+                int studentNumber = Integer.parseInt(scanner.nextLine());
+                if (studentNumber > 0 && studentNumber <= studentArray.length) {
+                  s.deleteStudent(studentArray[studentNumber - 1]);
                   System.out.println("Student został usunięty.");
                 } else {
                   System.out.println("Nieprawidłowy numer studenta.");
