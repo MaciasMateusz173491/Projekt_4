@@ -1,155 +1,21 @@
-import java.io.IOException;
-import java.util.Scanner;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-import java.util.Collection;
+// napisz kod w którym użyjesz klasy Service do dodania studenta do bazy danych
+import com.example.demo.Service;
+import com.example.demo.Student;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ConfigurableApplicationContext;
 
-class Main {
-  public static void main(String[] args) {
-    try {
-      Service s = new Service();
-      Scanner scanner = new Scanner(System.in);
-      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+@SpringBootApplication
+public class Main {
 
-      boolean tak = true;
-      while (tak) {
-        System.out.println("\nWybierz opcję:");
-        System.out.println("1 - Dodaj studenta");
-        System.out.println("2 - Wyświetl wszystkich studentów");
-        System.out.println("3 - Wyszukaj studentów po imieniu");
-        System.out.println("4 - Usuń studenta");
-        System.out.println("5 - Zakończ program");
-        System.out.print("Twój wybór: ");
-        int choice = Integer.parseInt(scanner.nextLine());
+    public static void main(String[] args) {
+        ConfigurableApplicationContext context = SpringApplication.run(Main.class, args);
+        Service service = context.getBean(Service.class);
 
-        switch (choice) {
-          case 1:
-            System.out.print("Podaj imię studenta: ");
-            String name = scanner.nextLine();
+        Student student = new Student("Jan", "Kowalski", 20);
+        service.addStudent(student);
 
-            System.out.print("Podaj nazwisko studenta: ");
-            String lastname = scanner.nextLine();
-
-            int age = 0;
-            boolean validAge = false;
-            while (!validAge) {
-              System.out.print("Podaj wiek studenta: ");
-              try {
-                age = Integer.parseInt(scanner.nextLine());
-                validAge = true;
-              } catch (NumberFormatException e) {
-                System.out.println("Wiek musi być liczbą. Spróbuj ponownie.");
-              }
-            }
-
-            // Walidacja daty urodzenia
-            String birthDate = "";
-            boolean validDate = false;
-            while (!validDate) {
-              System.out.print("Podaj datę urodzenia studenta (dd-MM-yyyy): ");
-              String inputDate = scanner.nextLine();
-              try {
-                LocalDate date = LocalDate.parse(inputDate, formatter);
-                if (date.isAfter(LocalDate.now())) {
-                  System.out.println("Data urodzenia nie może być z przyszłości. Spróbuj ponownie.");
-                } else {
-                  birthDate = inputDate;
-                  validDate = true;
-                }
-              } catch (DateTimeParseException e) {
-                System.out.println("Niepoprawny format daty lub data nie istnieje. Spróbuj ponownie używając formatu dd-MM-yyyy.");
-              }
-            }
-
-            s.addStudent(new Student(name, lastname, age, birthDate));
-            System.out.println("Dodano studenta.");
-            break;
-
-          case 2:
-            Collection<Student> students = s.getStudents();
-            System.out.println("📋 Lista studentów:");
-            for (Student current : students) {
-              System.out.println(current.toString());
-            }
-            break;
-
-          case 3:
-            // Wyszukiwanie studentów po imieniu
-            System.out.print("Podaj imię do wyszukania: ");
-            String searchName = scanner.nextLine();
-            Collection<Student> foundStudents = s.findStudentByName(searchName);
-            if (foundStudents.isEmpty()) {
-              System.out.println("Brak studentów o podanym imieniu.");
-            } else {
-              System.out.println("Znaleziono następujących studentów:");
-              Student[] studentArray = foundStudents.toArray(new Student[0]);
-              for (int i = 0; i < studentArray.length; i++) {
-                System.out.println((i + 1) + ". " + studentArray[i]);
-              }
-              
-              System.out.print("Czy chcesz usunąć któregoś z tych studentów? (tak/nie): ");
-              String deleteChoice = scanner.nextLine();
-              if (deleteChoice.equalsIgnoreCase("tak")) {
-                System.out.print("Podaj numer studenta do usunięcia: ");
-                try {
-                  int deleteNumber = Integer.parseInt(scanner.nextLine());
-                  if (deleteNumber > 0 && deleteNumber <= studentArray.length) {
-                    s.deleteStudent(studentArray[deleteNumber - 1]);
-                    System.out.println("Student został usunięty.");
-                  } else {
-                    System.out.println("Nieprawidłowy numer studenta.");
-                  }
-                } catch (NumberFormatException e) {
-                  System.out.println("Nieprawidłowy format numeru.");
-                }
-              }
-            }
-            break;
-
-          case 4:
-            System.out.print("Podaj imię studenta do usunięcia: ");
-            String deleteSearchName = scanner.nextLine();
-            Collection<Student> studentsToDelete = s.findStudentByName(deleteSearchName);
-            
-            if (studentsToDelete.isEmpty()) {
-              System.out.println("Nie znaleziono studentów o podanym imieniu.");
-            } else {
-              System.out.println("Znalezieni studenci:");
-              Student[] studentArray = studentsToDelete.toArray(new Student[0]);
-              for (int i = 0; i < studentArray.length; i++) {
-                System.out.println((i + 1) + ". " + studentArray[i]);
-              }
-              
-              System.out.print("Podaj numer studenta do usunięcia: ");
-              try {
-                int studentNumber = Integer.parseInt(scanner.nextLine());
-                if (studentNumber > 0 && studentNumber <= studentArray.length) {
-                  s.deleteStudent(studentArray[studentNumber - 1]);
-                  System.out.println("Student został usunięty.");
-                } else {
-                  System.out.println("Nieprawidłowy numer studenta.");
-                }
-              } catch (NumberFormatException e) {
-                System.out.println("Nieprawidłowy format numeru.");
-              }
-            }
-            break;
-
-          case 5:
-            System.out.println("Program zostanie zamknięty.");
-            tak = false;
-            break;
-            
-          default:
-            System.out.println("Niepoprawna opcja. Spróbuj ponownie.");
-            break;
-        }
-      }
-      scanner.close();
-
-    } catch (IOException e) {
-      System.out.println("Wystąpił błąd: " + e.getMessage());
+        System.out.println("Student added to database");
+        context.close();
     }
-  }
 }
